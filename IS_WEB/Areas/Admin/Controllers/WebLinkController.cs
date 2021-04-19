@@ -19,27 +19,6 @@ namespace IS_WEB.Areas.Admin.Controllers
     {
         public IActionResult Index()
         {
-
-           
-            //if (!string.IsNullOrEmpty(request.model))
-            //{
-            //    settings.DateFormatString = "dd/MM/yyyy";
-            //    searchObject = JsonConvert.DeserializeObject<WebLinkModel>(request.model, settings);
-            //}
-           
-            
-            //RestClient _client = new RestClient(hostAPI);
-            //var jsonDeserializer = new JsonDeserializer();
-            //_client.AddHandler("application/json", jsonDeserializer);
-            //var request = new RestRequest(ApiConstant.GetAllWebLink) { Method = Method.POST };
-            //request.AddHeader("cache-control", "no-cache");
-            //request.AddParameter("application/json; charset=utf-8", JsonConvert.SerializeObject(webLinkModelParamater), ParameterType.RequestBody);
-            //IRestResponse response = await _client.ExecuteAsync(request);
-            //var data = JsonConvert.DeserializeObject<List<WebLinkModel>>(response.Content);
-            //dynamic client = new RestClient(hostAPI);
-            //var data=await client.location_posts.Get().Result;
-            
-           
             return View();
         }
         public async Task<IActionResult> GetData(RequestDataModel request)

@@ -59,25 +59,31 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="form-main">
                     <div class="form-group">
-                        <label for="link_code" class="col-form-label">Mã liên kết:</label>
-                        <input type="text" class="form-control" id="link_code">
+                        <label for="link_code" class="col-form-label">Mã liên kết:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="link_code" name="link_code" required>
+                        <br>
+                        <span class="form-message"></span>
                     </div>
                     <div class="form-group">
-                        <label for="link_name" class="col-form-label">Tên liên kết:</label>
-                        <input type="text" class="form-control" id="link_name">
+                        <label for="link_name" class="col-form-label">Tên liên kết:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="link_name" name="link_name" required>
+                        <br>
+                        <span class="form-message"></span>
                     </div>
                     <div class="form-group">
                         <label for="description" class="col-form-label">Mô tả:</label>
-                        <input type="text" class="form-control" id="description">
+                        <input type="text" class="form-control" id="description" >
                     </div>
                     <div class="form-group">
-                        <label for="active" class="col-form-label">Trạng thái:</label>
-                        <select id="active">
+                        <label for="active" class="col-form-label">Trạng thái:<span style="color:red">(*)</span></label>
+                        <select id="active"  name="active" required>
                             <option value="1">Hoạt động</option>
                             <option value="0">Không hoạt động</option>
                         </select>
+                        <br>
+                        <span class="form-message"></span>
                         @*<input type="text" class="form-control" id="active">*@
                     </div>
                     <input type="hidden" class="form-control" id="link_id">
@@ -120,7 +126,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script>
     var start = 1;
-    var length = 4;
+    var length = 10;
     var totalRecord = 0;
 
 
@@ -132,6 +138,32 @@
         length: length,
         model: object
     }
+
+
+    //function Validator(formSelector) {
+    //    var formRules = {};
+
+    //    var validatorRules = {
+    //        isRequired: function (value) {
+    //            return value ? undefined : 'Vui lòng nhập trường này!';
+    //        }
+    //    };
+
+    //    var ruleName = 'isRequired';
+    //    //Lấy ra form element trong DOM theo formSelector
+    //    var formElement = document.querySelector(formSelector);
+
+    //    //Chỉ xử lý khi có element trong DOM
+    //    if (formElement) {
+    //        var inputs = formElement.querySelectorAll('[name][rules]');
+    //        for (var input of inputs) {
+    //            var 
+    //            formRules[input.name] = input.getAttribute('rules');
+    //        }
+    //    }
+    //}
+
+
     $(document).ready(function () {
 
         var formData = new FormData();
@@ -198,10 +230,11 @@
 
 
                 })
-                //loadPagination(totalRecord);
+
             }
         })
     }
+
     function loadPagination(total) {
         total = Math.ceil(total / length);
         $('#pagination').html("");
@@ -212,7 +245,7 @@
         $('#pagination').append(`<li class="paginate_button page-item next" id="dataTable_next"><a class='page-link'>Sau</a></li>`)
         var PaginationElement = document.querySelectorAll("li.item");
         $('.page-item.item').click(function () {
-            console.log("abc")
+
             PaginationElement.forEach(function (ele) {
                 ele.classList.remove("active");
                 ele.classList.remove("disabled");
@@ -257,7 +290,7 @@
         })
     }
 
-
+    
     function Save() {
 
         var formData = new FormData();
@@ -273,7 +306,9 @@
             Description: description,
             Active: active
         }
+        
         formData.append('model', JSON.stringify(ob));
+        
         $.ajax({
             type: "POST",
             datatype: "json",
@@ -283,13 +318,30 @@
             processData: false,
             contentType: false,
             success: function (data) {
-                alert(data.messege);
-                $("#exampleModal").modal('hide');
-                loadData(start, length, object);
+                
+                    alert(data.messege);
+                    $("#exampleModal").modal('hide');
+                    loadData(start, length, object);
+                
+               
             }
         })
     }
+    function check() {
+        var inputs = document.querySelectorAll("#form-main > div > .form-control");
+        inputs.forEach(function (val) {
+            val.onblur = function () {
+                if (val.value == '' || val.value === null) {
+                    val.parentNode.children[3].innerHTML = "Vui lòng nhập trường này";
+                    val.parentNode.children[3].style.color = "red";
+                }
 
+            }
+            val.oninput = function () {
+                    val.parentNode.children[3].innerHTML = "";
+            }
+        })
+    }
     function add() {
         $("#exampleModal").modal("show");
         $("#link_id").val("-1");
@@ -297,6 +349,7 @@
         $("#link_name").val("");
         $("#description").val("");
         $("#active").val("");
+        check();
     }
 
     function Edit(id) {
@@ -326,7 +379,9 @@
             }
 
         })
+        check();
     }
+
     function Delete(id) {
         var formData = new FormData();
 
@@ -374,4 +429,5 @@
 
         })
     }
+    
 </script>
