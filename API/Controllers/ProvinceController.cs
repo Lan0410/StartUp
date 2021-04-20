@@ -20,10 +20,31 @@ namespace API.Controllers
             _bus = bus;
         }
         [Route("get-all")]
-        [HttpGet]
-        public IEnumerable<ProvinceModel> GetAllData()
+        [HttpPost]
+        public ProvinceReturnModel GetAllData([FromBody] ProvinceModelParameter model)
         {
-            return _bus.GetAllData();
+            return _bus.GetAllData(model);
+        }
+
+        [Route("get-by-id")]
+        [HttpPost]
+        public ProvinceModel GetDataID([FromBody] ProvinceModel model)
+        {
+            return _bus.GetDataID(model.Id);
+        }
+
+        [Route("create")]
+        [HttpPost]
+        public int CreateOrUpdate([FromBody] ProvinceModel model)
+        {
+            return _bus.CreateOrUpdate(model);
+        }
+
+        [Route("delete")]
+        [HttpPost]
+        public int Delete([FromBody] ProvinceModel model)
+        {
+            return _bus.Delete(model);
         }
 
     }

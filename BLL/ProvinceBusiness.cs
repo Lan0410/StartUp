@@ -13,9 +13,23 @@ namespace BLL
         {
             _res = res;
         }
-        public List<ProvinceModel> GetAllData()
+        public ProvinceReturnModel GetAllData(ProvinceModelParameter model)
         {
-            return _res.GetAllData();
+            return _res.GetAllData(model);
+        }
+
+        public ProvinceModel GetDataID(int id)
+        {
+            return _res.GetDataID(id);
+        }
+        public int CreateOrUpdate(ProvinceModel model)
+        {
+            return _res.CreateOrUpdate(model);
+        }
+
+        public int Delete(ProvinceModel model)
+        {
+            return _res.Delete(model);
         }
     }
 }

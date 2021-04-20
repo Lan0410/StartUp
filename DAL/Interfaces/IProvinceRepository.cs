@@ -7,6 +7,9 @@ namespace DAL
 {
    public interface IProvinceRepository
     {
-        List<ProvinceModel> GetAllData();
+        ProvinceReturnModel GetAllData(ProvinceModelParameter model);
+        ProvinceModel GetDataID(int id);
+        int CreateOrUpdate(ProvinceModel model);
+        int Delete(ProvinceModel model);
     }
 }

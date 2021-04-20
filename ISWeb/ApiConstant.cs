@@ -19,7 +19,12 @@
         public const string DeleteWebLink = WebLinkPrefix + "delete-weblink";
         #endregion
 
-
+        //API Province
+        private const string ProvincePreFix = "api/Province/";
+        public const string GetAllProvince = ProvincePreFix + "get-all";
+        public const string CreateProvince = ProvincePreFix + "create";
+        public const string GetProvinceId = ProvincePreFix + "get-by-id";
+        public const string DeleteProvince = ProvincePreFix + "delete";
     }
 
 }

@@ -4,7 +4,7 @@
     Layout = "~/Areas/Admin/Shared/_Layout.cshtml";
 }
 
-<h1 class="h3 mb-2 text-gray-800">Danh sách liên kết</h1>
+<h1 class="h3 mb-2 text-gray-800">Danh sách tỉnh thành</h1>
 
 <button type="button" class="btn btn-outline-primary" onclick="add()">Thêm</button>
 
@@ -21,8 +21,8 @@
                             <thead>
                                 <tr role="row">
                                     <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 50px;">STT</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Mã website</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 408px;">Tên website</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Mã tỉnh thành</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 408px;">Tên tỉnh thành</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Mô tả</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Trạng thái</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Thao tác</th>
@@ -53,7 +53,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Thêm liên kết</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Thêm tỉnh thành</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -61,32 +61,32 @@
             <div class="modal-body">
                 <form id="form-main">
                     <div class="form-group">
-                        <label for="link_code" class="col-form-label">Mã liên kết:<span style="color:red">(*)</span></label>
-                        <input type="text" class="form-control" id="link_code" name="link_code" required>
+                        <label for="province_code" class="col-form-label">Mã tỉnh thành:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="province_code" name="province_code" required>
                         <br>
                         <span class="form-message"></span>
                     </div>
                     <div class="form-group">
-                        <label for="link_name" class="col-form-label">Tên liên kết:<span style="color:red">(*)</span></label>
-                        <input type="text" class="form-control" id="link_name" name="link_name" required>
+                        <label for="province_name" class="col-form-label">Tên tỉnh thành:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="province_name" name="province_name" required>
                         <br>
                         <span class="form-message"></span>
                     </div>
                     <div class="form-group">
                         <label for="description" class="col-form-label">Mô tả:</label>
-                        <input type="text" class="form-control" id="description" >
+                        <input type="text" class="form-control" id="description">
                     </div>
                     <div class="form-group">
                         <label for="active" class="col-form-label">Trạng thái:<span style="color:red">(*)</span></label>
-                        <select id="active"  name="active" required>
+                        <select id="active" name="active" required>
                             <option value="1">Hoạt động</option>
                             <option value="0">Không hoạt động</option>
                         </select>
                         <br>
                         <span class="form-message"></span>
-                        @*<input type="text" class="form-control" id="active">*@
+
                     </div>
-                    <input type="hidden" class="form-control" id="link_id">
+                    <input type="hidden" class="form-control" id="province_id">
                 </form>
             </div>
             <div class="modal-footer">
@@ -102,13 +102,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Xóa liên kết</h4>
+                <h4 class="modal-title">Xóa </h4>
             </div>
             <div class="modal-body">
 
-                <input type="hidden" class="form-control" id="link_id_delete">
+                <input type="hidden" class="form-control" id="province_id_delete">
                 <div class="row">
-                    <div class="col-md-12"><label class="label label-danger">Bạn có muốn xóa liên kết trên không?</label></div>
+                    <div class="col-md-12"><label class="label label-danger">Bạn có muốn xóa tỉnh thành trên không?</label></div>
 
                 </div>
             </div>
@@ -131,7 +131,7 @@
 
 
     var object = {
-        Link_Name: ""
+        Province_Name: ""
     }
     var request = {
         start: start,
@@ -150,7 +150,7 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/weblink/getdata",
+            url: "https://localhost:44329/admin/province/getdata",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
@@ -161,7 +161,7 @@
                 $.each(data.data, function (i, val) {
                     let act = val.active == 1 ? "Hoạt động" : "Không hoạt động";
                     let type = val.active == 1 ? 'badge-success' : 'badge-danger';
-                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.link_Code + "</td><td>" + val.link_Name + "</td>\
+                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.province_Code + "</td><td>" + val.province_Name + "</td>\
                 <td>"+ val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
                 <button  class='btn btn-outline-warning' onclick='Edit(" + val.id + ")'>Sửa</button>\
                 <button  class='btn btn-outline-danger' onclick='Delete(" + val.id + ")'>Xóa</button></td></tr > ")
@@ -188,7 +188,7 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/weblink/getdata",
+            url: "https://localhost:44329/admin/province/getdata",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
@@ -199,7 +199,7 @@
                 $.each(data.data, function (i, val) {
                     let act = val.active == 1 ? "Hoạt động" : "Không hoạt động";
                     let type = val.active == 1 ? 'badge-success' : 'badge-danger';
-                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.link_Code + "</td><td>" + val.link_Name + "</td>\
+                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.province_Code + "</td><td>" + val.province_Name + "</td>\
                 <td>"+ val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
                 <button  class='btn btn-outline-warning' onclick='Edit(" + val.id + ")'>Sửa</button>\
                 <button  class='btn btn-outline-danger' onclick='Delete(" + val.id + ")'>Xóa</button></td></tr > ")
@@ -266,40 +266,40 @@
         })
     }
 
-    
+
     function Save() {
 
         var formData = new FormData();
-        let id = $("#link_id").val();
-        let link_code = $("#link_code").val();
-        let link_name = $("#link_name").val();
+        let id = $("#province_id").val();
+        let province_code = $("#province_code").val();
+        let province_name = $("#province_name").val();
         let description = $("#description").val();
         let active = $("#active").val();
         let ob = {
             Id: id == '' ? -1 : id,
-            Link_Name: link_name,
-            Link_Code: link_code,
+            Province_Name: province_name,
+            Province_Code: province_code,
             Description: description,
             Active: active
         }
-        
+
         formData.append('model', JSON.stringify(ob));
-        
+
         $.ajax({
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/weblink/CreateOrUpdate",
+            url: "https://localhost:44329/admin/province/CreateOrUpdate",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
             success: function (data) {
-                
+
                     alert(data.messege);
                     $("#exampleModal").modal('hide');
                     loadData(start, length, object);
-                
-               
+
+
             }
         })
     }
@@ -320,9 +320,9 @@
     }
     function add() {
         $("#exampleModal").modal("show");
-        $("#link_id").val("-1");
-        $("#link_code").val("");
-        $("#link_name").val("");
+        $("#province_id").val("-1");
+        $("#province_code").val("");
+        $("#province_name").val("");
         $("#description").val("");
         $("#active").val("");
         check();
@@ -339,15 +339,15 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/weblink/GetByID",
+            url: "https://localhost:44329/admin/province/GetByID",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
             success: function (data) {
-                $("#exampleModalLabel").html("Sửa liên kết");
-                $("#link_id").val(data.id);
-                $("#link_code").val(data.link_Code);
-                $("#link_name").val(data.link_Name);
+                $("#exampleModalLabel").html("Sửa tỉnh thành");
+                $("#province_id").val(data.id);
+                $("#province_code").val(data.province_Code);
+                $("#province_name").val(data.province_Name);
                 $("#description").val(data.description);
                 $("#active").val(data.active);
                 $("#exampleModal").modal("show");
@@ -369,12 +369,12 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/weblink/GetByID",
+            url: "https://localhost:44329/admin/province/GetByID",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
             success: function (data) {
-                $("#link_id_delete").val(data.id);
+                $("#province_id_delete").val(data.id);
                 $("#delete").modal("show");
             }
 
@@ -384,7 +384,7 @@
 
     function SaveDelete(){
         var formData = new FormData();
-        let id = $("#link_id_delete").val();
+        let id = $("#province_id_delete").val();
         let ob = {
             Id: id
         }
@@ -393,7 +393,7 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/weblink/Delete",
+            url: "https://localhost:44329/admin/province/Delete",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
@@ -405,5 +405,7 @@
 
         })
     }
-    
+
 </script>
+
+
