@@ -21,9 +21,9 @@ namespace API.Controllers
         }
         [Route("get-all")]
         [HttpGet]
-        public IEnumerable<MentorModel> GetDatabAll()
+        public MenTorReturnModel GetDatabAll(MenTorModelParameter model)
         {
-            return _bus.GetDataAll();
+            return _bus.GetDataAll(model);
         }
 
         [Route("get-by-id/{id}")]

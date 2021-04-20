@@ -7,7 +7,7 @@ namespace BLL
 {
     public partial interface IMentorBusiness
     {
-        List<MentorModel> GetDataAll();
+        MenTorReturnModel GetDataAll(MenTorModelParameter model);
         MentorModel GetDataByID(int id);
         bool Create(MentorModel model);
         bool Update(MentorModel model);

@@ -13,9 +13,9 @@ namespace BLL
         {
             _res = res;
         }
-        public List<MentorModel> GetDataAll()
+        public MenTorReturnModel GetDataAll(MenTorModelParameter model)
         {
-            return _res.GetDataAll();
+            return _res.GetDataAll(model);
         }
         public MentorModel GetDataByID(int id)
         {

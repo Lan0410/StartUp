@@ -84,8 +84,6 @@ namespace DAL
             }
         }
 
-       
-
         public int Delete(WebLinkModel model)
         {
             string msgError = "";

@@ -15,15 +15,24 @@ namespace DAL
             _dbHelper = dbHelper;
         }
 
-        public List<MentorModel> GetDataAll()
+        public MenTorReturnModel GetDataAll(MenTorModelParameter model)
         {
             string msgError = "";
             try
             {
-                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "get_all_mentor");
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_mentor_search",
+                    "@page_index", model.Page?.PageIndex,
+                    "@page_size", model.Page?.PageSize,
+                    "@tenmentor", model.Data.Mentor_Name);
+                var result = new MenTorReturnModel();
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<MentorModel>().ToList();
+                else
+                {
+                    result.Data = dt.ConvertTo<MentorModel>().ToList();
+                    result.TotalRow = int.Parse(dt.Rows[0].ItemArray[dt.Rows[0].ItemArray.Length - 1].ToString());
+                }
+                return result;
             }
             catch (Exception ex)
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ISCommon.Model;
 
 namespace Model
 {
@@ -18,5 +19,15 @@ namespace Model
         public string CreatedBy { get; set; }
         public DateTime LastModifyDate { get; set; }
         public string LastModifyBy { get; set; }
+    }
+    public class MenTorModelParameter
+    {
+        public MentorModel Data { get; set; }
+        public PageParameter Page { get; set; }
+    }
+    public class MenTorReturnModel
+    {
+        public List<MentorModel> Data { get; set; }
+        public int TotalRow { get; set; }
     }
 }

@@ -25,6 +25,13 @@
         public const string CreateProvince = ProvincePreFix + "create";
         public const string GetProvinceId = ProvincePreFix + "get-by-id";
         public const string DeleteProvince = ProvincePreFix + "delete";
+
+        //API Mentor
+        private const string MentorPreFix = "api/Mentor/";
+        public const string GetAllMentor = MentorPreFix + "get-all";
+        public const string CreateMentor = MentorPreFix + "create";
+        public const string GetMentorId = MentorPreFix + "get-by-id";
+        public const string DeleteMentor = MentorPreFix + "delete";
     }
 
 }

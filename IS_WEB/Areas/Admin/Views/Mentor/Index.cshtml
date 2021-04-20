@@ -3,8 +3,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Shared/_Layout.cshtml";
 }
-
-<h1 class="h3 mb-2 text-gray-800">Danh sách liên kết</h1>
+<h1 class="h3 mb-2 text-gray-800">Danh sách cố vấn</h1>
 
 <button type="button" class="btn btn-outline-primary" onclick="add()">Thêm</button>
 
@@ -21,8 +20,8 @@
                             <thead>
                                 <tr role="row">
                                     <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 50px;">STT</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Mã website</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 408px;">Tên website</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Mã cố vấn</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 408px;">Tên cố vấn</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Mô tả</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Trạng thái</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Thao tác</th>
@@ -53,7 +52,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Thêm liên kết</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Thêm cố vấn</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -61,30 +60,47 @@
             <div class="modal-body">
                 <form id="form-main">
                     <div class="form-group">
-                        <label for="link_code" class="col-form-label">Mã liên kết:<span style="color:red">(*)</span></label>
-                        <input type="text" class="form-control" id="link_code" name="link_code" required>
+                        <label for="mentor_code" class="col-form-label">Mã cố vấn:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="mentor_code" name="mentor_code" required>
                         <br>
                         <span class="form-message"></span>
                     </div>
                     <div class="form-group">
-                        <label for="link_name" class="col-form-label">Tên liên kết:<span style="color:red">(*)</span></label>
-                        <input type="text" class="form-control" id="link_name" name="link_name" required>
+                        <label for="mentor_name" class="col-form-label">Tên cố vấn:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="mentor_name" name="mentor_name" required>
+                        <br>
+                        <span class="form-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="mentor_positio" class="col-form-label">Chức vụ:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="mentor_position" name="mentor_position" required>
+                        <br>
+                        <span class="form-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="mentor_introduce" class="col-form-label">Giới thiệu:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="mentor_introduce" name="mentor_introduce" required>
+                        <br>
+                        <span class="form-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="mentor_introduce" class="col-form-label">Giới thiệu:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="mentor_introduce" name="mentor_introduce" required>
                         <br>
                         <span class="form-message"></span>
                     </div>
                     <div class="form-group">
                         <label for="description" class="col-form-label">Mô tả:</label>
-                        <input type="text" class="form-control" id="description" >
+                        <input type="text" class="form-control" id="description">
                     </div>
                     <div class="form-group">
                         <label for="active" class="col-form-label">Trạng thái:<span style="color:red">(*)</span></label>
-                        <select id="active"  name="active" required>
+                        <select id="active" name="active" required>
                             <option value="1" selected>Hoạt động</option>
                             <option value="0">Không hoạt động</option>
                         </select>
                         <br>
                         <span class="form-message"></span>
-                        @*<input type="text" class="form-control" id="active">*@
                     </div>
                     <input type="hidden" class="form-control" id="link_id">
                 </form>
@@ -266,144 +282,145 @@
         })
     }
 
-    
-    function Save() {
 
-        var formData = new FormData();
-        let id = $("#link_id").val();
-        let link_code = $("#link_code").val();
-        let link_name = $("#link_name").val();
-        let description = $("#description").val();
-        let active = $("#active").val();
-        let ob = {
-            Id: id == '' ? -1 : id,
-            Link_Name: link_name,
-            Link_Code: link_code,
-            Description: description,
-            Active: active
-        }
-        
-        formData.append('model', JSON.stringify(ob));
-        
-        $.ajax({
-            type: "POST",
-            datatype: "json",
-            data: formData,
-            url: "https://localhost:44329/admin/weblink/CreateOrUpdate",
-            enctype: 'multipart/form-data',
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                
-                    alert(data.messege);
-                    $("#exampleModal").modal('hide');
-                    loadData(start, length, object);
-                
-               
-            }
-        })
-    }
-    function check() {
-        var inputs = document.querySelectorAll("#form-main > div > .form-control");
-        inputs.forEach(function (val) {
-            val.onblur = function () {
-                if (val.value == '' || val.value === null) {
-                    val.parentNode.children[3].innerHTML = "Vui lòng nhập trường này";
-                    val.parentNode.children[3].style.color = "red";
-                }
+    //function Save() {
 
-            }
-            val.oninput = function () {
-                    val.parentNode.children[3].innerHTML = "";
-            }
-        })
-    }
-    function add() {
-        $("#exampleModal").modal("show");
-        $("#link_id").val("-1");
-        $("#link_code").val("");
-        $("#link_name").val("");
-        $("#description").val("");
-        $("#active").val("");
-        check();
-    }
+    //    var formData = new FormData();
+    //    let id = $("#link_id").val();
+    //    let link_code = $("#link_code").val();
+    //    let link_name = $("#link_name").val();
+    //    let description = $("#description").val();
+    //    let active = $("#active").val();
+    //    let ob = {
+    //        Id: id == '' ? -1 : id,
+    //        Link_Name: link_name,
+    //        Link_Code: link_code,
+    //        Description: description,
+    //        Active: active
+    //    }
 
-    function Edit(id) {
-        var formData = new FormData();
+    //    formData.append('model', JSON.stringify(ob));
 
-        let ob = {
-            Id: id == '' ? -1 : id
-        }
-        formData.append('model', JSON.stringify(ob));
-        $.ajax({
-            type: "POST",
-            datatype: "json",
-            data: formData,
-            url: "https://localhost:44329/admin/weblink/GetByID",
-            enctype: 'multipart/form-data',
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                $("#exampleModalLabel").html("Sửa liên kết");
-                $("#link_id").val(data.id);
-                $("#link_code").val(data.link_Code);
-                $("#link_name").val(data.link_Name);
-                $("#description").val(data.description);
-                $("#active").val(data.active);
-                $("#exampleModal").modal("show");
+    //    $.ajax({
+    //        type: "POST",
+    //        datatype: "json",
+    //        data: formData,
+    //        url: "https://localhost:44329/admin/weblink/CreateOrUpdate",
+    //        enctype: 'multipart/form-data',
+    //        processData: false,
+    //        contentType: false,
+    //        success: function (data) {
 
-            }
+    //                alert(data.messege);
+    //                $("#exampleModal").modal('hide');
+    //                loadData(start, length, object);
 
-        })
-        check();
-    }
 
-    function Delete(id) {
-        var formData = new FormData();
+    //        }
+    //    })
+    //}
+    //function check() {
+    //    var inputs = document.querySelectorAll("#form-main > div > .form-control");
+    //    inputs.forEach(function (val) {
+    //        val.onblur = function () {
+    //            if (val.value == '' || val.value === null) {
+    //                val.parentNode.children[3].innerHTML = "Vui lòng nhập trường này";
+    //                val.parentNode.children[3].style.color = "red";
+    //            }
 
-        let ob = {
-            Id: id
-        }
-        formData.append('model', JSON.stringify(ob));
-        $.ajax({
-            type: "POST",
-            datatype: "json",
-            data: formData,
-            url: "https://localhost:44329/admin/weblink/GetByID",
-            enctype: 'multipart/form-data',
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                $("#link_id_delete").val(data.id);
-                $("#delete").modal("show");
-            }
+    //        }
+    //        val.oninput = function () {
+    //                val.parentNode.children[3].innerHTML = "";
+    //        }
+    //    })
+    //}
+    //function add() {
+    //    $("#exampleModal").modal("show");
+    //    $("#link_id").val("-1");
+    //    $("#link_code").val("");
+    //    $("#link_name").val("");
+    //    $("#description").val("");
+    //    $("#active").val("");
+    //    check();
+    //}
 
-        })
+    //function Edit(id) {
+    //    var formData = new FormData();
 
-    }
+    //    let ob = {
+    //        Id: id == '' ? -1 : id
+    //    }
+    //    formData.append('model', JSON.stringify(ob));
+    //    $.ajax({
+    //        type: "POST",
+    //        datatype: "json",
+    //        data: formData,
+    //        url: "https://localhost:44329/admin/weblink/GetByID",
+    //        enctype: 'multipart/form-data',
+    //        processData: false,
+    //        contentType: false,
+    //        success: function (data) {
+    //            $("#exampleModalLabel").html("Sửa liên kết");
+    //            $("#link_id").val(data.id);
+    //            $("#link_code").val(data.link_Code);
+    //            $("#link_name").val(data.link_Name);
+    //            $("#description").val(data.description);
+    //            $("#active").val(data.active);
+    //            $("#exampleModal").modal("show");
 
-    function SaveDelete(){
-        var formData = new FormData();
-        let id = $("#link_id_delete").val();
-        let ob = {
-            Id: id
-        }
-        formData.append('model', JSON.stringify(ob));
-        $.ajax({
-            type: "POST",
-            datatype: "json",
-            data: formData,
-            url: "https://localhost:44329/admin/weblink/Delete",
-            enctype: 'multipart/form-data',
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                alert(data.messege);
-                $("#delete").hide();
-                loadData(start, length, object);
-            }
+    //        }
 
-        })
-    }
-    
+    //    })
+    //    check();
+    //}
+
+    //function Delete(id) {
+    //    var formData = new FormData();
+
+    //    let ob = {
+    //        Id: id
+    //    }
+    //    formData.append('model', JSON.stringify(ob));
+    //    $.ajax({
+    //        type: "POST",
+    //        datatype: "json",
+    //        data: formData,
+    //        url: "https://localhost:44329/admin/weblink/GetByID",
+    //        enctype: 'multipart/form-data',
+    //        processData: false,
+    //        contentType: false,
+    //        success: function (data) {
+    //            $("#link_id_delete").val(data.id);
+    //            $("#delete").modal("show");
+    //        }
+
+    //    })
+
+    //}
+
+    //function SaveDelete(){
+    //    var formData = new FormData();
+    //    let id = $("#link_id_delete").val();
+    //    let ob = {
+    //        Id: id
+    //    }
+    //    formData.append('model', JSON.stringify(ob));
+    //    $.ajax({
+    //        type: "POST",
+    //        datatype: "json",
+    //        data: formData,
+    //        url: "https://localhost:44329/admin/weblink/Delete",
+    //        enctype: 'multipart/form-data',
+    //        processData: false,
+    //        contentType: false,
+    //        success: function (data) {
+    //            alert(data.messege);
+    //            $("#delete").hide();
+    //            loadData(start, length, object);
+    //        }
+
+    //    })
+    //}
+
 </script>
+

@@ -7,7 +7,7 @@ namespace DAL
 {
     public interface IMentorRepository
     {
-        List<MentorModel> GetDataAll();
+        MenTorReturnModel GetDataAll(MenTorModelParameter model);
         MentorModel GetDataByID(int id);
         bool Create(MentorModel model);
         bool Update(MentorModel model);
