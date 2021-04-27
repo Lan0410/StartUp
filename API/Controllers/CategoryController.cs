@@ -25,5 +25,26 @@ namespace API.Controllers
         {
             return _bus.GetDataAll(model);
         }
+
+        [Route("get-by-id")]
+        [HttpPost]
+        public CategoryModel GetDataID([FromBody] CategoryModel model)
+        {
+            return _bus.GetDataByID(model.Id);
+        }
+
+        [Route("create")]
+        [HttpPost]
+        public int CreateOrUpdate([FromBody] CategoryModel model)
+        {
+            return _bus.CreateOrUpdate(model);
+        }
+
+        [Route("delete")]
+        [HttpPost]
+        public int Delete([FromBody] CategoryModel model)
+        {
+            return _bus.Delete(model);
+        }
     }
 }

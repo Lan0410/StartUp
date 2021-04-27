@@ -324,7 +324,7 @@
 
     function SaveDelete() {
         var formData = new FormData();
-        let id = $("#province_id_delete").val();
+        let id = $("#genre_id_delete").val();
         let ob = {
             Id: id
         }
@@ -333,7 +333,7 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/province/Delete",
+            url: "https://localhost:44329/admin/genre/Delete",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,

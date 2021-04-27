@@ -17,5 +17,19 @@ namespace BLL
         {
             return _res.GetDataAll(model);
         }
+
+        public CategoryModel GetDataByID(int id)
+        {
+            return _res.GetDataByID(id);
+        }
+        public int CreateOrUpdate(CategoryModel model)
+        {
+            return _res.CreateOrUpdate(model);
+        }
+
+        public int Delete(CategoryModel model)
+        {
+            return _res.Delete(model);
+        }
     }
 }

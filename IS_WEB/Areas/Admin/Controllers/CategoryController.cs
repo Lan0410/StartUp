@@ -46,5 +46,69 @@ namespace IS_WEB.Areas.Admin.Controllers
             return Json(data);
         }
 
+        public async Task<IActionResult> CreateOrUpdate(RequestDataModel request)
+        {
+            var settings = new JsonSerializerSettings();
+            var searchObject = new CategoryModel
+            {
+            };
+            settings.DateFormatString = "dd/MM/yyyy";
+            searchObject = JsonConvert.DeserializeObject<CategoryModel>(request.model, settings);
+
+            var category = new CategoryModel();
+            category = searchObject;
+            category.LastModifyDate = DateTime.Now;
+            var hostAPI = "https://localhost:44322";
+            var rs = await ApiProvider.PostAsync<int>(hostAPI, ApiConstant.CreateCategory, category);
+            if (rs == Constant.ReturnExcuteFunction.Success)
+            {
+                return Json(new { messege = "Thành công !" });
+            }
+            else
+            {
+                return Json(new { messege = "Thất bại!" });
+            }
+        }
+        public async Task<IActionResult> GetByID(RequestDataModel request)
+        {
+            var settings = new JsonSerializerSettings();
+            var searchObject = new CategoryModel
+            {
+            };
+            settings.DateFormatString = "dd/MM/yyyy";
+            searchObject = JsonConvert.DeserializeObject<CategoryModel>(request.model, settings);
+
+            var category = new CategoryModel();
+            category = searchObject;
+            category.LastModifyDate = DateTime.Now;
+            var hostAPI = "https://localhost:44322";
+            var rs = await ApiProvider.PostAsync<CategoryModel>(hostAPI, ApiConstant.GetCategoryId, category);
+            return Json(rs);
+        }
+
+        public async Task<IActionResult> Delete(RequestDataModel request)
+        {
+            var settings = new JsonSerializerSettings();
+            var searchObject = new CategoryModel
+            {
+            };
+            settings.DateFormatString = "dd/MM/yyyy";
+            searchObject = JsonConvert.DeserializeObject<CategoryModel>(request.model, settings);
+
+            var category = new CategoryModel();
+            category = searchObject;
+            category.LastModifyDate = DateTime.Now;
+            var hostAPI = "https://localhost:44322";
+            var rs = await ApiProvider.PostAsync<int>(hostAPI, ApiConstant.DeleteCategory, category);
+            if (rs == Constant.ReturnExcuteFunction.Success)
+            {
+                return Json(new { messege = "Thành công !" });
+            }
+            else
+            {
+                return Json(new { messege = "Thất bại!" });
+            }
+        }
+
     }
 }

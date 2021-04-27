@@ -44,6 +44,9 @@
         //API Category
         private const string CategoryPreFix = "api/Category/";
         public const string GetAllCategory = CategoryPreFix + "get-all";
+        public const string CreateCategory = CategoryPreFix + "create";
+        public const string GetCategoryId = CategoryPreFix + "get-by-id";
+        public const string DeleteCategory = CategoryPreFix + "delete";
     }
 
 }

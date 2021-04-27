@@ -8,5 +8,8 @@ namespace DAL
     public interface ICategoryRepository
     {
         CategoryReturnModel GetDataAll(CategoryModelParameter model);
+        CategoryModel GetDataByID(int id);
+        int CreateOrUpdate(CategoryModel model);
+        int Delete(CategoryModel model);
     }
 }
