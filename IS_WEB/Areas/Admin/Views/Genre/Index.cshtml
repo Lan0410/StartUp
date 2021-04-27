@@ -4,7 +4,7 @@
     Layout = "~/Areas/Admin/Shared/_Layout.cshtml";
 }
 
-<h1 class="h3 mb-2 text-gray-800">Danh sách tỉnh thành</h1>
+<h1 class="h3 mb-2 text-gray-800">Danh sách loại tin tức</h1>
 
 <button type="button" class="btn btn-outline-primary" onclick="add()">Thêm</button>
 
@@ -21,8 +21,9 @@
                             <thead>
                                 <tr role="row">
                                     <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 50px;">STT</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Mã tỉnh thành</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 408px;">Tên tỉnh thành</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Mã loại</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 408px;">Tên loại</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 408px;">Thứ tự</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Mô tả</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Trạng thái</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Thao tác</th>
@@ -53,7 +54,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Thêm tỉnh thành</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Thêm loại tin</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -61,14 +62,20 @@
             <div class="modal-body">
                 <form id="form-main">
                     <div class="form-group">
-                        <label for="province_code" class="col-form-label">Mã tỉnh thành:<span style="color:red">(*)</span></label>
-                        <input type="text" class="form-control" id="province_code" name="province_code" required>
+                        <label for="genre_code" class="col-form-label">Mã loại tin:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="genre_code" name="genre_code" >
                         <br>
                         <span class="form-message"></span>
                     </div>
                     <div class="form-group">
-                        <label for="province_name" class="col-form-label">Tên tỉnh thành:<span style="color:red">(*)</span></label>
-                        <input type="text" class="form-control" id="province_name" name="province_name" required>
+                        <label for="genre_name" class="col-form-label">Tên loại tin:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="genre_name" name="genre_name" >
+                        <br>
+                        <span class="form-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="sequence" class="col-form-label">Thứ tự:</label>
+                        <input type="text" class="form-control" id="sequence" name="sequence" >
                         <br>
                         <span class="form-message"></span>
                     </div>
@@ -78,7 +85,7 @@
                     </div>
                     <div class="form-group">
                         <label for="active" class="col-form-label">Trạng thái:<span style="color:red">(*)</span></label>
-                        <select id="active" name="active" required>
+                        <select id="active" name="active" >
                             <option value="1" selected>Hoạt động</option>
                             <option value="0">Không hoạt động</option>
                         </select>
@@ -86,7 +93,7 @@
                         <span class="form-message"></span>
 
                     </div>
-                    <input type="hidden" class="form-control" id="province_id">
+                    <input type="hidden" class="form-control" id="genre_id">
                 </form>
             </div>
             <div class="modal-footer">
@@ -106,9 +113,9 @@
             </div>
             <div class="modal-body">
 
-                <input type="hidden" class="form-control" id="province_id_delete">
+                <input type="hidden" class="form-control" id="genre_id_delete">
                 <div class="row">
-                    <div class="col-md-12"><label class="label label-danger">Bạn có muốn xóa tỉnh thành trên không?</label></div>
+                    <div class="col-md-12"><label class="label label-danger">Bạn có muốn xóa loại tin trên không?</label></div>
 
                 </div>
             </div>
@@ -123,22 +130,21 @@
 
 
 <!--End modal-->
+
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script>
     var start = 1;
     var length = 10;
     var totalRecord = 0;
 
-
     var object = {
-        Province_Name: ""
+        Genre_Name: ""
     }
     var request = {
         start: start,
         length: length,
         model: object
     }
-
 
     $(document).ready(function () {
 
@@ -150,7 +156,7 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/province/getdata",
+            url: "https://localhost:44329/admin/genre/getdata",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
@@ -161,8 +167,8 @@
                 $.each(data.data, function (i, val) {
                     let act = val.active == 1 ? "Hoạt động" : "Không hoạt động";
                     let type = val.active == 1 ? 'badge-success' : 'badge-danger';
-                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.province_Code + "</td><td>" + val.province_Name + "</td>\
-                <td>"+ val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
+                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.genre_Code + "</td><td>" + val.genre_Name + "</td>\
+                        <td>"+ val.sequence + " </td><td>" + val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
                 <button  class='btn btn-outline-warning' onclick='Edit(" + val.id + ")'>Sửa</button>\
                 <button  class='btn btn-outline-danger' onclick='Delete(" + val.id + ")'>Xóa</button></td></tr > ")
 
@@ -188,7 +194,7 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/province/getdata",
+            url: "https://localhost:44329/admin/genre/getdata",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
@@ -199,8 +205,8 @@
                 $.each(data.data, function (i, val) {
                     let act = val.active == 1 ? "Hoạt động" : "Không hoạt động";
                     let type = val.active == 1 ? 'badge-success' : 'badge-danger';
-                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.province_Code + "</td><td>" + val.province_Name + "</td>\
-                <td>"+ val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
+                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.genre_Code + "</td><td>" + val.genre_Name + "</td>\
+                        <td>"+ val.sequence + " </td><td>" + val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
                 <button  class='btn btn-outline-warning' onclick='Edit(" + val.id + ")'>Sửa</button>\
                 <button  class='btn btn-outline-danger' onclick='Delete(" + val.id + ")'>Xóa</button></td></tr > ")
 
@@ -214,15 +220,17 @@
     function Save() {
 
         var formData = new FormData();
-        let id = $("#province_id").val();
-        let province_code = $("#province_code").val();
-        let province_name = $("#province_name").val();
+        let id = $("#genre_id").val();
+        let genre_code = $("#genre_code").val();
+        let genre_name = $("#genre_name").val();
+        let sequence = $("#sequence").val();
         let description = $("#description").val();
         let active = $("#active").val();
         let ob = {
             Id: id == '' ? -1 : id,
-            Province_Name: province_name,
-            Province_Code: province_code,
+            Genre_Name: genre_name,
+            Genre_Code: genre_code,
+            Sequence: sequence,
             Description: description,
             Active: active
         }
@@ -233,26 +241,27 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/province/CreateOrUpdate",
+            url: "https://localhost:44329/admin/genre/CreateOrUpdate",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
             success: function (data) {
 
-                    alert(data.messege);
-                    $("#exampleModal").modal('hide');
-                    loadData(start, length, object);
+                alert(data.messege);
+                $("#exampleModal").modal('hide');
+                loadData(start, length, object);
 
 
             }
         })
     }
- 
+
     function add() {
         $("#exampleModal").modal("show");
-        $("#province_id").val("-1");
-        $("#province_code").val("");
-        $("#province_name").val("");
+        $("#genre_id").val("-1");
+        $("#genre_code").val("");
+        $("#genre_name").val("");
+        $("#sequence").val("");
         $("#description").val("");
         $("#active").val("");
         check();
@@ -269,19 +278,20 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/province/GetByID",
+            url: "https://localhost:44329/admin/genre/GetByID",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
             success: function (data) {
-                $("#exampleModalLabel").html("Sửa tỉnh thành");
-                $("#province_id").val(data.id);
-                $("#province_code").val(data.province_Code);
-                $("#province_name").val(data.province_Name);
+                $("#exampleModalLabel").html("Sửa loại tin");
+                $("#genre_id").val(data.id);
+                $("#genre_code").val(data.genre_Code);
+                $("#genre_name").val(data.genre_Name);
+                $("#sequence").val(data.sequence);
                 $("#description").val(data.description);
                 $("#active").val(data.active);
                 $("#exampleModal").modal("show");
-
+                console.log(data);
             }
 
         })
@@ -299,12 +309,12 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/province/GetByID",
+            url: "https://localhost:44329/admin/genre/GetByID",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
             success: function (data) {
-                $("#province_id_delete").val(data.id);
+                $("#genre_id_delete").val(data.id);
                 $("#delete").modal("show");
             }
 
@@ -312,7 +322,7 @@
 
     }
 
-    function SaveDelete(){
+    function SaveDelete() {
         var formData = new FormData();
         let id = $("#province_id_delete").val();
         let ob = {
@@ -337,5 +347,3 @@
     }
 
 </script>
-
-

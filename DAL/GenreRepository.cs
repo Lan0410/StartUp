@@ -8,29 +8,29 @@ using System.Text;
 
 namespace DAL
 {
-    public partial class MentorRepository: IMentorRepository
+    public partial class GenreRepository:IGenreRepository
     {
         private IDatabaseHelper _dbHelper;
-        public MentorRepository(IDatabaseHelper dbHelper)
+        public GenreRepository(IDatabaseHelper dbHelper)
         {
             _dbHelper = dbHelper;
         }
 
-        public MenTorReturnModel GetDataAll(MenTorModelParameter model)
+        public GenreReturnModel GetDataAll(GenreModelParameter model)
         {
             string msgError = "";
             try
             {
-                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_mentor_search",
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_genre_search",
                     "@page_index", model.Page?.PageIndex,
                     "@page_size", model.Page?.PageSize,
-                    "@tenmentor", model.Data.Mentor_Name);
-                var result = new MenTorReturnModel();
+                    "@tengenre", model.Data.Genre_Name);
+                var result = new GenreReturnModel();
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
                 else
                 {
-                    result.Data = dt.ConvertTo<MentorModel>().ToList();
+                    result.Data = dt.ConvertTo<GenreModel>().ToList();
                     result.TotalRow = int.Parse(dt.Rows[0].ItemArray[dt.Rows[0].ItemArray.Length - 1].ToString());
                 }
                 return result;
@@ -41,16 +41,16 @@ namespace DAL
             }
         }
 
-        public MentorModel GetDataByID(int id)
+        public GenreModel GetDataByID(int id)
         {
             string msgError = "";
             try
             {
-                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_mentor_get_by_id",
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_genre_get_by_id",
                      "@id", id);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<MentorModel>().FirstOrDefault();
+                return dt.ConvertTo<GenreModel>().FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -58,18 +58,16 @@ namespace DAL
             }
         }
 
-        public int CreateOrUpdate(MentorModel model)
+        public int CreateOrUpdate(GenreModel model)
         {
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "MENTOR_INSERT_OR_UPDATE",
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "GENRE_INSERT_OR_UPDATE",
                 "@id", model.Id,
-                "@mentor_code", model.Mentor_Code,
-                "@mentor_name", model.Mentor_Name,
-                "@position",model.Position,
-                "@introduce",model.Introduce,
-                "@avatar",model.Avatar,
+                "@genre_code", model.Genre_Code,
+                "@genre_name", model.Genre_Name,
+                "@sequence", model.Sequence,
                 "@description", model.Description,
                 "@active", model.Active);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
@@ -87,12 +85,12 @@ namespace DAL
             }
         }
 
-        public int Delete(MentorModel model)
+        public int Delete(GenreModel model)
         {
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_mentor_delete",
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_genre_delete",
                 "@id", model.Id);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {

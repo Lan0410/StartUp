@@ -9,8 +9,7 @@ namespace BLL
     {
         MenTorReturnModel GetDataAll(MenTorModelParameter model);
         MentorModel GetDataByID(int id);
-        bool Create(MentorModel model);
-        bool Update(MentorModel model);
-        bool Delete(string id);
+        int CreateOrUpdate(MentorModel model);
+        int Delete(MentorModel model);
     }
 }

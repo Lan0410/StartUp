@@ -6,27 +6,27 @@ using System.Text;
 
 namespace BLL
 {
-    public partial class MentorBusiness:IMentorBusiness
+    public partial class GenreBusiness:IGenreBusiness
     {
-        IMentorRepository _res;
-        public MentorBusiness(IMentorRepository res)
+        IGenreRepository _res;
+        public GenreBusiness(IGenreRepository res)
         {
             _res = res;
         }
-        public MenTorReturnModel GetDataAll(MenTorModelParameter model)
+        public GenreReturnModel GetDataAll(GenreModelParameter model)
         {
             return _res.GetDataAll(model);
         }
-        public MentorModel GetDataByID(int id)
+        public GenreModel GetDataByID(int id)
         {
             return _res.GetDataByID(id);
         }
-        public int CreateOrUpdate(MentorModel model)
+        public int CreateOrUpdate(GenreModel model)
         {
             return _res.CreateOrUpdate(model);
         }
-        
-        public int Delete(MentorModel model)
+
+        public int Delete(GenreModel model)
         {
             return _res.Delete(model);
         }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using Microsoft.AspNetCore.Http;
 namespace ISCommon.Model
 {
 
@@ -10,6 +10,7 @@ namespace ISCommon.Model
         public int length { get; set; }
 
         public string model { get; set; }
+        public IFormFile files { get; set; } 
 
     }
     

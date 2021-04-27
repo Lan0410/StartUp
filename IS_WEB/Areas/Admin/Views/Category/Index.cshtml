@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Shared/_Layout.cshtml";
+}
+
+<h1 class="h3 mb-2 text-gray-800">Danh sách danh mục</h1>
+
+<button type="button" class="btn btn-outline-primary" onclick="add()">Thêm</button>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                            <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 50px;">STT</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Mã danh mục</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 408px;">Tên danh mục</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 408px;">Danh mục cha</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Mô tả</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Trạng thái</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Thao tác</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="list"></tbody>
+                        </table>
+                    </div>
+                </div><div class="row" style="cursor:pointer">
+                    <div class="col-sm-12 col-md-5"></div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                            <ul class="pagination" id="pagination">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script>
+    var start = 1;
+    var length = 10;
+    var totalRecord = 0;
+
+    var object = {
+        Category_Name: ""
+    }
+    var request = {
+        start: start,
+        length: length,
+        model: object
+    }
+
+    $(document).ready(function () {
+
+        var formData = new FormData();
+        formData.append('start', start);
+        formData.append('length', length);
+        formData.append('model', JSON.stringify(object));
+        $.ajax({
+            type: "POST",
+            datatype: "json",
+            data: formData,
+            url: "https://localhost:44329/admin/category/getdata",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $("#list").html("");
+                totalRecord = data.totalRow;
+                let count = (start - 1) * length + 1;
+                $.each(data.data, function (i, val) {
+                    let act = val.active == 1 ? "Hoạt động" : "Không hoạt động";
+                    let type = val.active == 1 ? 'badge-success' : 'badge-danger';
+                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.category_Code + "</td><td>" + val.Category_Name + "</td>\
+                        <td> "+ val.parents + " </td><td>" + val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
+                <button  class='btn btn-outline-warning' onclick='Edit(" + val.id + ")'>Sửa</button>\
+                <button  class='btn btn-outline-danger' onclick='Delete(" + val.id + ")'>Xóa</button></td></tr > ")
+
+
+                })
+                loadPagination(totalRecord);
+                let PElement = document.querySelector("li.item");
+                PElement.classList.add("active");
+                if (totalRecord > 0) {
+
+                }
+            }
+        })
+
+    })
+
+    function loadData(start, length, object) {
+        var formData = new FormData();
+        formData.append('start', start);
+        formData.append('length', length);
+        formData.append('model', JSON.stringify(object));
+        $.ajax({
+            type: "POST",
+            datatype: "json",
+            data: formData,
+            url: "https://localhost:44329/admin/category/getdata",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $("#list").html("");
+                totalRecord = data.totalRow;
+                let count = (start - 1) * length + 1;
+                $.each(data.data, function (i, val) {
+                    let act = val.active == 1 ? "Hoạt động" : "Không hoạt động";
+                    let type = val.active == 1 ? 'badge-success' : 'badge-danger';
+                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.category_Code + "</td><td>" + val.Category_Name + "</td>\
+                        <td> "+ val.parents + " </td><td>" + val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
+                <button  class='btn btn-outline-warning' onclick='Edit(" + val.id + ")'>Sửa</button>\
+                <button  class='btn btn-outline-danger' onclick='Delete(" + val.id + ")'>Xóa</button></td></tr > ")
+
+
+                })
+
+            }
+        })
+    }
+
+  
+</script>

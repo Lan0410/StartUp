@@ -32,6 +32,18 @@
         public const string CreateMentor = MentorPreFix + "create";
         public const string GetMentorId = MentorPreFix + "get-by-id";
         public const string DeleteMentor = MentorPreFix + "delete";
+
+
+        //API Genre
+        private const string GenrePreFix = "api/Genre/";
+        public const string GetAllGenre = GenrePreFix + "get-all";
+        public const string CreateGenre = GenrePreFix + "create";
+        public const string GetGenreId = GenrePreFix + "get-by-id";
+        public const string DeleteGenre = GenrePreFix + "delete";
+
+        //API Category
+        private const string CategoryPreFix = "api/Category/";
+        public const string GetAllCategory = CategoryPreFix + "get-all";
     }
 
 }

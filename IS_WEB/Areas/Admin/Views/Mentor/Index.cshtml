@@ -22,6 +22,7 @@
                                     <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 50px;">STT</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Mã cố vấn</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 408px;">Tên cố vấn</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 408px;">Hình ảnh</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Mô tả</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Trạng thái</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Thao tác</th>
@@ -61,31 +62,31 @@
                 <form id="form-main">
                     <div class="form-group">
                         <label for="mentor_code" class="col-form-label">Mã cố vấn:<span style="color:red">(*)</span></label>
-                        <input type="text" class="form-control" id="mentor_code" name="mentor_code" required>
+                        <input type="text" class="form-control" id="mentor_code" name="mentor_code" >
                         <br>
                         <span class="form-message"></span>
                     </div>
                     <div class="form-group">
                         <label for="mentor_name" class="col-form-label">Tên cố vấn:<span style="color:red">(*)</span></label>
-                        <input type="text" class="form-control" id="mentor_name" name="mentor_name" required>
+                        <input type="text" class="form-control" id="mentor_name" name="mentor_name" >
                         <br>
                         <span class="form-message"></span>
                     </div>
                     <div class="form-group">
                         <label for="mentor_positio" class="col-form-label">Chức vụ:<span style="color:red">(*)</span></label>
-                        <input type="text" class="form-control" id="mentor_position" name="mentor_position" required>
+                        <input type="text" class="form-control" id="mentor_position" name="mentor_position" >
                         <br>
                         <span class="form-message"></span>
                     </div>
                     <div class="form-group">
-                        <label for="mentor_introduce" class="col-form-label">Giới thiệu:<span style="color:red">(*)</span></label>
-                        <input type="text" class="form-control" id="mentor_introduce" name="mentor_introduce" required>
+                        <label for="mentor_introduce" class="col-form-label">Giới thiệu:</label>
+                        <input type="text" class="form-control" id="mentor_introduce" name="mentor_introduce" >
                         <br>
                         <span class="form-message"></span>
                     </div>
                     <div class="form-group">
-                        <label for="mentor_introduce" class="col-form-label">Giới thiệu:<span style="color:red">(*)</span></label>
-                        <input type="text" class="form-control" id="mentor_introduce" name="mentor_introduce" required>
+                        <label for="mentor_avt" class="col-form-label">Ảnh đại diện:<span style="color:red">(*)</span></label>
+                        <input type="file" class="form-control" id="mentor_avt" name="mentor_avt" >
                         <br>
                         <span class="form-message"></span>
                     </div>
@@ -95,7 +96,7 @@
                     </div>
                     <div class="form-group">
                         <label for="active" class="col-form-label">Trạng thái:<span style="color:red">(*)</span></label>
-                        <select id="active" name="active" required>
+                        <select id="active" name="active" >
                             <option value="1" selected>Hoạt động</option>
                             <option value="0">Không hoạt động</option>
                         </select>
@@ -118,13 +119,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Xóa liên kết</h4>
+                <h4 class="modal-title">Xóa</h4>
             </div>
             <div class="modal-body">
 
                 <input type="hidden" class="form-control" id="link_id_delete">
                 <div class="row">
-                    <div class="col-md-12"><label class="label label-danger">Bạn có muốn xóa liên kết trên không?</label></div>
+                    <div class="col-md-12"><label class="label label-danger">Bạn có muốn xóa cố vấn trên không?</label></div>
 
                 </div>
             </div>
@@ -145,16 +146,14 @@
     var length = 10;
     var totalRecord = 0;
 
-
     var object = {
-        Link_Name: ""
+        Mentor_Name: ""
     }
     var request = {
         start: start,
         length: length,
         model: object
     }
-
 
     $(document).ready(function () {
 
@@ -166,7 +165,7 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/weblink/getdata",
+            url: "https://localhost:44329/admin/mentor/getdata",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
@@ -177,8 +176,8 @@
                 $.each(data.data, function (i, val) {
                     let act = val.active == 1 ? "Hoạt động" : "Không hoạt động";
                     let type = val.active == 1 ? 'badge-success' : 'badge-danger';
-                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.link_Code + "</td><td>" + val.link_Name + "</td>\
-                <td>"+ val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
+                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.mentor_Code + "</td><td>" + val.mentor_Name + "</td>\
+                        <td><img src = 'https://localhost:44329/img/avatars/"+ val.avatar + "' width ='100px' height='100px'></td><td>"+ val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
                 <button  class='btn btn-outline-warning' onclick='Edit(" + val.id + ")'>Sửa</button>\
                 <button  class='btn btn-outline-danger' onclick='Delete(" + val.id + ")'>Xóa</button></td></tr > ")
 
@@ -204,7 +203,7 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/weblink/getdata",
+            url: "https://localhost:44329/admin/mentor/getdata",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
@@ -215,8 +214,8 @@
                 $.each(data.data, function (i, val) {
                     let act = val.active == 1 ? "Hoạt động" : "Không hoạt động";
                     let type = val.active == 1 ? 'badge-success' : 'badge-danger';
-                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.link_Code + "</td><td>" + val.link_Name + "</td>\
-                <td>"+ val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
+                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.mentor_Code + "</td><td>" + val.mentor_Name + "</td>\
+                        <td><img src = 'https://localhost:44329/img/avatars/"+ val.avatar + "' width ='100px' height='100px'></td><td>" + val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
                 <button  class='btn btn-outline-warning' onclick='Edit(" + val.id + ")'>Sửa</button>\
                 <button  class='btn btn-outline-danger' onclick='Delete(" + val.id + ")'>Xóa</button></td></tr > ")
 
@@ -282,145 +281,158 @@
         })
     }
 
+    function Save() {
+        var input = document.getElementById('mentor_avt');
+        var files = input.files;
+        var formData = new FormData();
+        let id = $("#link_id").val();
+        let mentor_code = $("#mentor_code").val();
+        let mentor_name = $("#mentor_name").val();
+        let mentor_position = $("#mentor_position").val();
+        let mentor_introduce = $("#mentor_introduce").val();
+        let mentor_avatar = $("#mentor_avt").val();
+        let description = $("#description").val();
+        let active = $("#active").val();
+        let ob = {
+            Id: id == '' ? -1 : id,
+            Mentor_Name: mentor_code,
+            Mentor_Code: mentor_name,
+            Mentor_Positon: mentor_position ,
+            Mentor_Introduce: mentor_introduce,
+            Mentor_Avatar: mentor_avatar,
+            Description: description,
+            Active: active
+        }
 
-    //function Save() {
+        formData.append('model', JSON.stringify(ob));
+        formData.append('files', files[0]);
+        $.ajax({
+            type: "POST",
+            datatype: "json",
+            data: formData,
+            url: "https://localhost:44329/admin/mentor/CreateOrUpdate",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function (data) {
 
-    //    var formData = new FormData();
-    //    let id = $("#link_id").val();
-    //    let link_code = $("#link_code").val();
-    //    let link_name = $("#link_name").val();
-    //    let description = $("#description").val();
-    //    let active = $("#active").val();
-    //    let ob = {
-    //        Id: id == '' ? -1 : id,
-    //        Link_Name: link_name,
-    //        Link_Code: link_code,
-    //        Description: description,
-    //        Active: active
-    //    }
-
-    //    formData.append('model', JSON.stringify(ob));
-
-    //    $.ajax({
-    //        type: "POST",
-    //        datatype: "json",
-    //        data: formData,
-    //        url: "https://localhost:44329/admin/weblink/CreateOrUpdate",
-    //        enctype: 'multipart/form-data',
-    //        processData: false,
-    //        contentType: false,
-    //        success: function (data) {
-
-    //                alert(data.messege);
-    //                $("#exampleModal").modal('hide');
-    //                loadData(start, length, object);
+                    alert(data.messege);
+                    $("#exampleModal").modal('hide');
+                    loadData(start, length, object);
 
 
-    //        }
-    //    })
-    //}
-    //function check() {
-    //    var inputs = document.querySelectorAll("#form-main > div > .form-control");
-    //    inputs.forEach(function (val) {
-    //        val.onblur = function () {
-    //            if (val.value == '' || val.value === null) {
-    //                val.parentNode.children[3].innerHTML = "Vui lòng nhập trường này";
-    //                val.parentNode.children[3].style.color = "red";
-    //            }
+            }
+        })
+    }
 
-    //        }
-    //        val.oninput = function () {
-    //                val.parentNode.children[3].innerHTML = "";
-    //        }
-    //    })
-    //}
-    //function add() {
-    //    $("#exampleModal").modal("show");
-    //    $("#link_id").val("-1");
-    //    $("#link_code").val("");
-    //    $("#link_name").val("");
-    //    $("#description").val("");
-    //    $("#active").val("");
-    //    check();
-    //}
+    function check() {
+        var inputs = document.querySelectorAll("#form-main > div > .form-control");
+        inputs.forEach(function (val) {
+            val.onblur = function () {
+                if (val.value == '' || val.value === null) {
+                    val.parentNode.children[3].innerHTML = "Vui lòng nhập trường này";
+                    val.parentNode.children[3].style.color = "red";
+                }
 
-    //function Edit(id) {
-    //    var formData = new FormData();
+            }
+            val.oninput = function () {
+                    val.parentNode.children[3].innerHTML = "";
+            }
+        })
+    }
 
-    //    let ob = {
-    //        Id: id == '' ? -1 : id
-    //    }
-    //    formData.append('model', JSON.stringify(ob));
-    //    $.ajax({
-    //        type: "POST",
-    //        datatype: "json",
-    //        data: formData,
-    //        url: "https://localhost:44329/admin/weblink/GetByID",
-    //        enctype: 'multipart/form-data',
-    //        processData: false,
-    //        contentType: false,
-    //        success: function (data) {
-    //            $("#exampleModalLabel").html("Sửa liên kết");
-    //            $("#link_id").val(data.id);
-    //            $("#link_code").val(data.link_Code);
-    //            $("#link_name").val(data.link_Name);
-    //            $("#description").val(data.description);
-    //            $("#active").val(data.active);
-    //            $("#exampleModal").modal("show");
+    function add() {
+        $("#exampleModal").modal("show");
+        $("#link_id").val("-1");
+        $("#mentor_code").val("");
+        $("#mentor_name").val("");
+        $("#mentor_position").val("");
+        $("#mentor_introduce").val("");
+        $("#mentor_avt").val("");
+        $("#description").val("");
+        $("#active").val("");
+        check();
+    }
 
-    //        }
+    function Edit(id) {
+        var formData = new FormData();
 
-    //    })
-    //    check();
-    //}
+        let ob = {
+            Id: id == '' ? -1 : id
+        }
+        formData.append('model', JSON.stringify(ob));
+        $.ajax({
+            type: "POST",
+            datatype: "json",
+            data: formData,
+            url: "https://localhost:44329/admin/mentor/GetByID",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $("#exampleModalLabel").html("Sửa liên kết");
+                $("#link_id").val(data.id);
+                $("#mentor_code").val(data.mentor_Code);
+                $("#mentor_name").val(data.Mentor_Name);
+                $("#mentor_position").val(data.Position);
+                $("#mentor_introduce").val(data.Introduce);
+                $("#mentor_avt").val(data.Avatar);
+                $("#description").val(data.description);
+                $("#active").val(data.active);
+                $("#exampleModal").modal("show");
 
-    //function Delete(id) {
-    //    var formData = new FormData();
+            }
 
-    //    let ob = {
-    //        Id: id
-    //    }
-    //    formData.append('model', JSON.stringify(ob));
-    //    $.ajax({
-    //        type: "POST",
-    //        datatype: "json",
-    //        data: formData,
-    //        url: "https://localhost:44329/admin/weblink/GetByID",
-    //        enctype: 'multipart/form-data',
-    //        processData: false,
-    //        contentType: false,
-    //        success: function (data) {
-    //            $("#link_id_delete").val(data.id);
-    //            $("#delete").modal("show");
-    //        }
+        })
+        check();
+    }
 
-    //    })
+    function Delete(id) {
+        var formData = new FormData();
 
-    //}
+        let ob = {
+            Id: id
+        }
+        formData.append('model', JSON.stringify(ob));
+        $.ajax({
+            type: "POST",
+            datatype: "json",
+            data: formData,
+            url: "https://localhost:44329/admin/mentor/GetByID",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $("#link_id_delete").val(data.id);
+                $("#delete").modal("show");
+            }
 
-    //function SaveDelete(){
-    //    var formData = new FormData();
-    //    let id = $("#link_id_delete").val();
-    //    let ob = {
-    //        Id: id
-    //    }
-    //    formData.append('model', JSON.stringify(ob));
-    //    $.ajax({
-    //        type: "POST",
-    //        datatype: "json",
-    //        data: formData,
-    //        url: "https://localhost:44329/admin/weblink/Delete",
-    //        enctype: 'multipart/form-data',
-    //        processData: false,
-    //        contentType: false,
-    //        success: function (data) {
-    //            alert(data.messege);
-    //            $("#delete").hide();
-    //            loadData(start, length, object);
-    //        }
+        })
 
-    //    })
-    //}
+    }
 
+    function SaveDelete(){
+        var formData = new FormData();
+        let id = $("#link_id_delete").val();
+        let ob = {
+            Id: id
+        }
+        formData.append('model', JSON.stringify(ob));
+        $.ajax({
+            type: "POST",
+            datatype: "json",
+            data: formData,
+            url: "https://localhost:44329/admin/mentor/Delete",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                alert(data.messege);
+                $("#delete").hide();
+                loadData(start, length, object);
+            }
+
+        })
+    }
 </script>
 
