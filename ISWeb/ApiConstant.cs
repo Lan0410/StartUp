@@ -47,6 +47,13 @@
         public const string CreateCategory = CategoryPreFix + "create";
         public const string GetCategoryId = CategoryPreFix + "get-by-id";
         public const string DeleteCategory = CategoryPreFix + "delete";
+
+        //API Localtion
+        private const string LocaltionPreFix = "api/Localtion/";
+        public const string GetAllLocaltion = LocaltionPreFix + "get-all";
+        public const string CreateLocaltion = LocaltionPreFix + "create";
+        public const string GetLocaltionId = LocaltionPreFix + "get-by-id";
+        public const string DeleteLocaltion = LocaltionPreFix + "delete";
     }
 
 }

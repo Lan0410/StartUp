@@ -1,0 +1,358 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Shared/_Layout.cshtml";
+}
+
+<h1 class="h3 mb-2 text-gray-800">Danh sách localtion</h1>
+
+<button type="button" class="btn btn-outline-primary" onclick="add()">Thêm</button>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                            <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 50px;">STT</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Mã localtion</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 408px;">Tên localtion</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 100px;">X</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 100px;">Y</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Mô tả</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Trạng thái</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Thao tác</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="list"></tbody>
+                        </table>
+                    </div>
+                </div><div class="row" style="cursor:pointer">
+                    <div class="col-sm-12 col-md-5"></div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                            <ul class="pagination" id="pagination">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!--Modal show-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby=data-toggle ="modal" data-target="#exampleModal" "exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm localtion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-main">
+                    <div class="form-group">
+                        <label for="localtion_code" class="col-form-label">Mã localtion:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="localtion_code" name="localtion_code">
+                        <br>
+                        <span class="form-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="localtion_name" class="col-form-label">Tên localtion:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="localtion_name" name="localtion_name">
+                        <br>
+                        <span class="form-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="point_x" class="col-form-label">X:</label>
+                        <input type="text" class="form-control" id="point_x" name="point_x">
+                        <br>
+                        <span class="form-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="point_y" class="col-form-label">Y:</label>
+                        <input type="text" class="form-control" id="point_y" name="point_y">
+                        <br>
+                        <span class="form-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="col-form-label">Mô tả:</label>
+                        <input type="text" class="form-control" id="description">
+                    </div>
+                    <div class="form-group">
+                        <label for="active" class="col-form-label">Trạng thái:<span style="color:red">(*)</span></label>
+                        <select id="active" name="active">
+                            <option value="1" selected>Hoạt động</option>
+                            <option value="0">Không hoạt động</option>
+                        </select>
+                        <br>
+                        <span class="form-message"></span>
+
+                    </div>
+                    <input type="hidden" class="form-control" id="localtion_id">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="Save()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="delete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Xóa </h4>
+            </div>
+            <div class="modal-body">
+
+                <input type="hidden" class="form-control" id="localtion_id_delete">
+                <div class="row">
+                    <div class="col-md-12"><label class="label label-danger">Bạn có muốn xóa localtion trên không?</label></div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" id="cmdxoa" onclick="SaveDelete()">Delete</button>
+                <button class="btn btn-danger" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--End modal-->
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script>
+    var start = 1;
+    var length = 10;
+    var totalRecord = 0;
+
+    var object = {
+        Localtion_Name: ""
+    }
+    var request = {
+        start: start,
+        length: length,
+        model: object
+    }
+
+    $(document).ready(function () {
+
+        var formData = new FormData();
+        formData.append('start', start);
+        formData.append('length', length);
+        formData.append('model', JSON.stringify(object));
+        $.ajax({
+            type: "POST",
+            datatype: "json",
+            data: formData,
+            url: "https://localhost:44329/admin/localtion/getdata",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $("#list").html("");
+                totalRecord = data.totalRow;
+                let count = (start - 1) * length + 1;
+                $.each(data.data, function (i, val) {
+                    let act = val.active == 1 ? "Hoạt động" : "Không hoạt động";
+                    let type = val.active == 1 ? 'badge-success' : 'badge-danger';
+                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.localtion_Code + "</td><td>" + val.localtion_Name + "</td>\
+                        <td> "+ val.point_X + " </td><td>" + val.point_Y+"</td><td>" + val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
+                <button  class='btn btn-outline-warning' onclick='Edit(" + val.id + ")'>Sửa</button>\
+                <button  class='btn btn-outline-danger' onclick='Delete(" + val.id + ")'>Xóa</button></td></tr > ")
+
+
+                })
+                loadPagination(totalRecord);
+                let PElement = document.querySelector("li.item");
+                PElement.classList.add("active");
+                if (totalRecord > 0) {
+
+                }
+            }
+        })
+
+    })
+
+    function loadData(start, length, object) {
+        var formData = new FormData();
+        formData.append('start', start);
+        formData.append('length', length);
+        formData.append('model', JSON.stringify(object));
+        $.ajax({
+            type: "POST",
+            datatype: "json",
+            data: formData,
+            url: "https://localhost:44329/admin/localtion/getdata",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $("#list").html("");
+                totalRecord = data.totalRow;
+                let count = (start - 1) * length + 1;
+                $.each(data.data, function (i, val) {
+                    let act = val.active == 1 ? "Hoạt động" : "Không hoạt động";
+                    let type = val.active == 1 ? 'badge-success' : 'badge-danger';
+                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.localtion_Code + "</td><td>" + val.localtion_Name + "</td>\
+                        <td> "+ val.point_X + " </td><td>" + val.point_Y + "</td><td>" + val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
+                <button  class='btn btn-outline-warning' onclick='Edit(" + val.id + ")'>Sửa</button>\
+                <button  class='btn btn-outline-danger' onclick='Delete(" + val.id + ")'>Xóa</button></td></tr > ")
+
+                })
+
+            }
+        })
+    }
+
+    function Save() {
+
+        var formData = new FormData();
+        let id = $("#localtion_id").val();
+        let localtion_code = $("#localtion_code").val();
+        let localtion_name = $("#localtion_name").val();
+        let point_x = $("#point_x").val();
+        let point_y = $("#point_y").val();
+        let description = $("#description").val();
+        let active = $("#active").val();
+        let ob = {
+            Id: id == '' ? -1 : id,
+            Localtion_Name: localtion_name,
+            Localtion_Code: localtion_code,
+            Point_X: point_x,
+            Point_Y: point_y,
+            Description: description,
+            Active: active
+        }
+
+        formData.append('model', JSON.stringify(ob));
+
+        $.ajax({
+            type: "POST",
+            datatype: "json",
+            data: formData,
+            url: "https://localhost:44329/admin/localtion/CreateOrUpdate",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function (data) {
+
+                alert(data.messege);
+                $("#exampleModal").modal('hide');
+                loadData(start, length, object);
+
+
+            }
+        })
+    }
+
+    function add() {
+        $("#exampleModal").modal("show");
+        $("#localtion_id").val("-1");
+        $("#localtion_code").val("");
+        $("#localtion_name").val("");
+        $("#point_x").val("");
+        $("#point_y").val("");
+        $("#description").val("");
+        $("#active").val("");
+        check();
+    }
+
+    function Edit(id) {
+        var formData = new FormData();
+
+        let ob = {
+            Id: id == '' ? -1 : id
+        }
+        formData.append('model', JSON.stringify(ob));
+        $.ajax({
+            type: "POST",
+            datatype: "json",
+            data: formData,
+            url: "https://localhost:44329/admin/localtion/GetByID",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $("#exampleModalLabel").html("Sửa loại tin");
+                $("#localtion_id").val(data.id);
+                $("#localtion_code").val(data.localtion_Code);
+                $("#localtion_name").val(data.localtion_Name);
+                $("#point_x").val(data.point_X);
+                $("#point_y").val(data.point_Y);
+                $("#description").val(data.description);
+                $("#active").val(data.active);
+                $("#exampleModal").modal("show");
+                console.log(data);
+            }
+
+        })
+        check();
+    }
+
+    function Delete(id) {
+        var formData = new FormData();
+
+        let ob = {
+            Id: id
+        }
+        formData.append('model', JSON.stringify(ob));
+        $.ajax({
+            type: "POST",
+            datatype: "json",
+            data: formData,
+            url: "https://localhost:44329/admin/localtion/GetByID",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $("#localtion_id_delete").val(data.id);
+                $("#delete").modal("show");
+            }
+
+        })
+
+    }
+
+    function SaveDelete() {
+        var formData = new FormData();
+        let id = $("#localtion_id_delete").val();
+        let ob = {
+            Id: id
+        }
+        formData.append('model', JSON.stringify(ob));
+        $.ajax({
+            type: "POST",
+            datatype: "json",
+            data: formData,
+            url: "https://localhost:44329/admin/localtion/Delete",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                alert(data.messege);
+                $("#delete").hide();
+                loadData(start, length, object);
+            }
+
+        })
+    }
+
+</script>
+
