@@ -48,6 +48,10 @@ namespace API
             services.AddTransient<IGenreBusiness, GenreBusiness>();
             services.AddTransient<ILocaltionRepository, LocaltionRepository>();
             services.AddTransient<ILocaltionBusiness, LocaltionBusiness>();
+            services.AddTransient<IPageGroupRepository, PageGroupRepository>();
+            services.AddTransient<IPageGroupBusiness, PageGroupBusiness>();
+            services.AddTransient<IGroupPageRepository, GroupPageRepository>();
+            services.AddTransient<IGroupPageBusiness, GroupPageBusiness>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
