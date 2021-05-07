@@ -14,6 +14,8 @@ namespace IS_WEB.Areas.Admin.Controllers
     {
         public IActionResult Index()
         {
+            
+
             return View();
         }
 
@@ -39,6 +41,8 @@ namespace IS_WEB.Areas.Admin.Controllers
             var data = await ApiProvider.PostAsync<GroupPageReturnModel>(hostAPI, ApiConstant.GetAllGroupPage, grouppageModelParamater);
             return Json(data);
         }
+
+        
 
         public async Task<IActionResult> CreateOrUpdate(RequestDataModel request)
         {

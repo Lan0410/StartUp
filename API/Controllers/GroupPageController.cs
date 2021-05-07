@@ -26,6 +26,13 @@ namespace API.Controllers
             return _bus.GetDataAll(model);
         }
 
+        [Route("getall")]
+        [HttpPost]
+        public GroupPageReturnModel GetAll(GroupPageModelParameter model)
+        {
+            return _bus.GetAll(model);
+        }
+
         [Route("get-by-id")]
         [HttpPost]
         public GroupPageModel GetDataID([FromBody] GroupPageModel model)

@@ -39,6 +39,27 @@ namespace DAL
             }
         }
 
+        public GroupPageReturnModel GetAll(GroupPageModelParameter model)
+        {
+            string msgError = "abc";
+            try
+            {
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_Page_Group_getall");
+                var result = new GroupPageReturnModel();
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+                else
+                {
+                    result.Data = dt.ConvertTo<GroupPageModel>().ToList();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public GroupPageModel GetDataID(int id)
         {
             string msgError = "";

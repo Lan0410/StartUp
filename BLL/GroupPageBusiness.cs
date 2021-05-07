@@ -19,6 +19,11 @@ namespace BLL
             return _res.GetDataAll(model);
         }
 
+        public GroupPageReturnModel GetAll(GroupPageModelParameter model)
+        {
+            return _res.GetAll(model);
+        }
+
         public GroupPageModel GetDataID(int id)
         {
             return _res.GetDataID(id);

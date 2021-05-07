@@ -1,12 +1,26 @@
-﻿
+﻿@using Model;
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Shared/_Layout.cshtml";
 }
+@{
+    var listGroupPage = ViewData["GroupPage"] as List<GroupPageModel>;
+}
+<h1 class="h3 mb-2 text-gray-800">Danh sách trang</h1>
 
-<h1 class="h3 mb-2 text-gray-800">Danh sách nhóm trang</h1>
+<div>
+    <button type="button" class="btn btn-outline-primary" onclick="add()" style="margin-bottom:5px">Thêm</button>
 
-<button type="button" class="btn btn-outline-primary" onclick="add()">Thêm</button>
+    <label style="float:right">
+        Hiển thị
+        <select id="show-entries" onchange="getval()">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="-1">All</option>
+        </select> bản ghi
+    </label>
+</div>
 
 
 <!-- DataTales Example -->
@@ -20,13 +34,14 @@
                         <table class="table table-bordered dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                             <thead>
                                 <tr role="row">
-                                    <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 50px;">STT</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Mã Group</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 408px;">Tên Group</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 100px;">Public</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Mô tả</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Trạng thái</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Thao tác</th>
+                                    <th class="sorting_asc"  >STT</th>
+                                    <th class="sorting" >Mã trang</th>
+                                    <th class="sorting" >Tên trang</th>
+                                    <th class="sorting" >Nhóm trang</th>
+                                    <th class="sorting" >Public</th>
+                                    <th class="sorting" >Mô tả</th>
+                                    <th class="sorting" >Trạng thái</th>
+                                    <th class="sorting" >Thao tác</th>
                                 </tr>
                             </thead>
 
@@ -49,12 +64,11 @@
     </div>
 </div>
 
-<!--Modal show-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby=data-toggle ="modal" data-target="#exampleModal" "exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Thêm nhóm trang</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Thêm trang</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -62,16 +76,28 @@
             <div class="modal-body">
                 <form id="form-main">
                     <div class="form-group">
-                        <label for="pagegroup_code" class="col-form-label">Mã group:<span style="color:red">(*)</span></label>
-                        <input type="text" class="form-control" id="pagegroup_code" name="pagegroup_code" required>
+                        <label for="page_code" class="col-form-label">Mã trang:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="page_code" name="page_code" required>
                         <br>
                         <span class="form-message"></span>
                     </div>
                     <div class="form-group">
-                        <label for="pagegroup_name" class="col-form-label">Tên nhóm:<span style="color:red">(*)</span></label>
-                        <input type="text" class="form-control" id="pagegroup_name" name="pagegroup_name" required>
+                        <label for="page_name" class="col-form-label">Tên trang:<span style="color:red">(*)</span></label>
+                        <input type="text" class="form-control" id="page_name" name="page_name" required>
                         <br>
                         <span class="form-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_group_page" class="col-form-label">Nhóm trang:<span style="color:red">(*)</span></label>
+                        <select id="id_group_page" name="id_group_page" required>
+                            @foreach (var item in listGroupPage)
+                            {
+                                <option value="@item.Id" selected id="name_group">@item.GroupPage_Name</option>
+                            }
+                        </select>
+                        <br>
+                        <span class="form-message"></span>
+
                     </div>
                     <div class="form-group">
                         <label for="is_public" class="col-form-label">Public:<span style="color:red">(*)</span></label>
@@ -97,7 +123,7 @@
                         <span class="form-message"></span>
 
                     </div>
-                    <input type="hidden" class="form-control" id="pagegroup_id">
+                    <input type="hidden" class="form-control" id="page_id">
                 </form>
             </div>
             <div class="modal-footer">
@@ -117,9 +143,9 @@
             </div>
             <div class="modal-body">
 
-                <input type="hidden" class="form-control" id="pagegroup_id_delete">
+                <input type="hidden" class="form-control" id="page_id_delete">
                 <div class="row">
-                    <div class="col-md-12"><label class="label label-danger">Bạn có muốn xóa nhóm trang trên không?</label></div>
+                    <div class="col-md-12"><label class="label label-danger">Bạn có muốn xóa trang trên không?</label></div>
 
                 </div>
             </div>
@@ -136,13 +162,14 @@
 <!--End modal-->
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script>
+    var entries = document.getElementById('show-entries');
+    var length = entries.value;
     var start = 1;
-    var length = 10;
     var totalRecord = 0;
 
 
     var object = {
-        PageGroup_Name: ""
+        Page_Name: ""
     }
     var request = {
         start: start,
@@ -161,7 +188,7 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/pagegroup/getdata",
+            url: "https://localhost:44329/admin/page/getdata",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
@@ -173,18 +200,15 @@
                     let act = val.active == 1 ? "Hoạt động" : "Không hoạt động";
                     let public = val.is_public == 1 ? "Công khai" : "Ẩn";
                     let type = val.active == 1 ? 'badge-success' : 'badge-danger';
-                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.group_page_Code + "</td><td>" + val.group_page_Name + "</td>\
-                <td>"+ public + "</td><td>" + val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
+                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.page_Code + "</td><td>" + val.page_Name + "</td>\
+                <td>"+ val.group_Page_Name + "</td><td>" + public + "</td><td>" + val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
                 <button  class='btn btn-outline-warning' onclick='Edit(" + val.id + ")'>Sửa</button>\
                 <button  class='btn btn-outline-danger' onclick='Delete(" + val.id + ")'>Xóa</button></td></tr > ")
-
                 })
                 loadPagination(totalRecord);
                 let PElement = document.querySelector("li.item");
                 PElement.classList.add("active");
-                if (totalRecord > 0) {
 
-                }
             }
         })
 
@@ -199,7 +223,7 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/pagegroup/getdata",
+            url: "https://localhost:44329/admin/page/getdata",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
@@ -211,30 +235,32 @@
                     let act = val.active == 1 ? "Hoạt động" : "Không hoạt động";
                     let public = val.is_public == 1 ? "Công khai" : "Ẩn";
                     let type = val.active == 1 ? 'badge-success' : 'badge-danger';
-                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.group_page_Code + "</td><td>" + val.group_page_Name + "</td>\
-                <td>"+ public + "</td><td>" + val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
+                    $("#list").append("<tr><td>" + (i + count) + "</td><td>" + val.page_Code + "</td><td>" + val.page_Name + "</td>\
+                <td>"+ val.group_Page_Name + "</td><td>" + public + "</td><td>" + val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
                 <button  class='btn btn-outline-warning' onclick='Edit(" + val.id + ")'>Sửa</button>\
                 <button  class='btn btn-outline-danger' onclick='Delete(" + val.id + ")'>Xóa</button></td></tr > ")
-
                 })
 
             }
         })
     }
 
+
     function Save() {
 
         var formData = new FormData();
-        let id = $("#pagegroup_id").val();
-        let pagegroup_code = $("#pagegroup_code").val();
-        let pagegroup_name = $("#pagegroup_name").val();
+        let id = $("#page_id").val();
+        let page_code = $("#page_code").val();
+        let page_name = $("#page_name").val();
+        let id_group_page = $("#id_group_page").val();
         let is_public = $("#is_public").val();
         let description = $("#description").val();
         let active = $("#active").val();
         let ob = {
             Id: id == '' ? -1 : id,
-            Pagegroup_Name: pagegroup_name,
-            Pagegroup_Code: pagegroup_code,
+            page_Name: page_name,
+            page_Code: page_code,
+            id_group_page: id_group_page,
             Is_public: is_public,
             Description: description,
             Active: active
@@ -246,15 +272,15 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/pagegroup/CreateOrUpdate",
+            url: "https://localhost:44329/admin/page/CreateOrUpdate",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
             success: function (data) {
-
-                    alert(data.messege);
-                    $("#exampleModal").modal('hide');
-                    loadData(start, length, object);
+                console.log(data.id);
+                alert(data.messege);
+                $("#exampleModal").modal('hide');
+                loadData(start, length, object);
 
 
             }
@@ -263,9 +289,10 @@
 
     function add() {
         $("#exampleModal").modal("show");
-        $("#pagegroup_id").val("-1");
-        $("#pagegroup_code").val("");
-        $("#pagegroup_name").val("");
+        $("#page_id").val("-1");
+        $("#page_code").val("");
+        $("#page_name").val("");
+        $("#id_group_page").val("");
         $("#is_public").val("");
         $("#description").val("");
         $("#active").val("");
@@ -283,19 +310,20 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/pagegroup/GetByID",
+            url: "https://localhost:44329/admin/page/GetByID",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
             success: function (data) {
                 $("#exampleModalLabel").html("Sửa nhóm trang");
-                $("#pagegroup_code").val(data.pagegroup_Code);
-                $("#pagegroup_name").val(data.pagegroup_Name);
+                $("#page_id").val(data.id);
+                $("#page_code").val(data.page_Code);
+                $("#page_name").val(data.page_Name);
+                $("#name_group").val(data.group_Page_Name);
                 $("#is_public").val(data.is_public);
                 $("#description").val(data.description);
                 $("#active").val(data.active);
                 $("#exampleModal").modal("show");
-
             }
 
         })
@@ -313,12 +341,12 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/pagegroup/GetByID",
+            url: "https://localhost:44329/admin/page/GetByID",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
             success: function (data) {
-                $("#pagegroup_id_delete").val(data.id);
+                $("#page_id_delete").val(data.id);
                 $("#delete").modal("show");
             }
 
@@ -326,9 +354,9 @@
 
     }
 
-    function SaveDelete(){
+    function SaveDelete() {
         var formData = new FormData();
-        let id = $("#pagegroup_id_delete").val();
+        let id = $("#page_id_delete").val();
         let ob = {
             Id: id
         }
@@ -337,7 +365,7 @@
             type: "POST",
             datatype: "json",
             data: formData,
-            url: "https://localhost:44329/admin/pagegroup/Delete",
+            url: "https://localhost:44329/admin/page/Delete",
             enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
@@ -350,4 +378,16 @@
         })
     }
 
+    function getval() {
+        length = $('#show-entries').val();
+        if (length == -1) {
+            length = totalRecords;
+            loadData(start, length, object);
+        }
+        loadData(start, length, object);
+        loadPagination(totalRecord);
+        let PElement = document.querySelector("li.item");
+        PElement.classList.add("active");
+
+    }
 </script>

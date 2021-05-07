@@ -55,19 +55,22 @@
         public const string GetLocaltionId = LocaltionPreFix + "get-by-id";
         public const string DeleteLocaltion = LocaltionPreFix + "delete";
 
-        //API PageGroup
-        private const string PageGroupPreFix = "api/PageGroup/";
-        public const string GetAllPageGroup = PageGroupPreFix + "get-all";
-        public const string CreatePageGroup = PageGroupPreFix + "create";
-        public const string GetPageGroupId = PageGroupPreFix + "get-by-id";
-        public const string DeletePageGroup = PageGroupPreFix + "delete";
 
         //API GroupPage
         private const string GroupPagePreFix = "api/GroupPage/";
         public const string GetAllGroupPage = GroupPagePreFix + "get-all";
+        public const string GetDataAllGroupPage = GroupPagePreFix + "getall";
         public const string CreateGroupPage = GroupPagePreFix + "create";
         public const string GetGroupPageId = GroupPagePreFix + "get-by-id";
         public const string DeleteGroupPage = GroupPagePreFix + "delete";
+
+
+        //API Page
+        private const string PagePreFix = "api/Page/";
+        public const string GetAllPage = PagePreFix + "get-all";
+        public const string CreatePage = PagePreFix + "create";
+        public const string GetPageId = PagePreFix + "get-by-id";
+        public const string DeletePage = PagePreFix + "delete";
     }
 
 }

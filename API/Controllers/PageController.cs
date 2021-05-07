@@ -12,37 +12,36 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PageGroupController : ControllerBase
+    public class PageController : ControllerBase
     {
-        IPageGroupBusiness _bus;
-        public PageGroupController(IPageGroupBusiness bus)
+        IPageBusiness _bus;
+        public PageController(IPageBusiness bus)
         {
             _bus = bus;
         }
         [Route("get-all")]
         [HttpPost]
-        public PageGroupReturnModel GetAllData([FromBody] PageGroupModelParameter model)
+        public PageReturnModel GetDataAll(PageModelParameter model)
         {
-            return _bus.GetAllData(model);
+            return _bus.GetDataAll(model);
         }
-
         [Route("get-by-id")]
         [HttpPost]
-        public PageGroupModel GetDataID([FromBody] PageGroupModel model)
+        public PageModel GetDataID([FromBody] PageModel model)
         {
             return _bus.GetDataID(model.Id);
         }
 
         [Route("create")]
         [HttpPost]
-        public int CreateOrUpdate([FromBody] PageGroupModel model)
+        public int CreateOrUpdate([FromBody] PageModel model)
         {
             return _bus.CreateOrUpdate(model);
         }
 
         [Route("delete")]
         [HttpPost]
-        public int Delete([FromBody] PageGroupModel model)
+        public int Delete([FromBody] PageModel model)
         {
             return _bus.Delete(model);
         }

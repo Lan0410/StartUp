@@ -1,35 +1,34 @@
 ﻿using System;
 using DAL.Helper;
 using Model;
-using ISCommon.Constant;
 using System.Linq;
-using System.Collections.Generic;
-using System.Text;
+using ISCommon.Constant;
 
 namespace DAL
 {
-    public partial class PageGroupRepository: IPageGroupRepository
+    public partial class PageRepository:IPageRepository
     {
         private IDatabaseHelper _dbHelper;
-        public PageGroupRepository(IDatabaseHelper dbHelper)
+        public PageRepository(IDatabaseHelper dbHelper)
         {
             _dbHelper = dbHelper;
         }
-        public PageGroupReturnModel GetAllData(PageGroupModelParameter model)
+
+        public PageReturnModel GetDataAll(PageModelParameter model)
         {
             string msgError = "";
             try
             {
-                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_page_group_search",
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_page_search",
                     "@page_index", model.Page?.PageIndex,
                     "@page_size", model.Page?.PageSize,
-                    "@tenpr", model.Data.GroupPage_Name);
-                var result = new PageGroupReturnModel();
+                    "@tenpage", model.Data.Page_Name);
+                var result = new PageReturnModel();
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
                 else
                 {
-                    result.Data = dt.ConvertTo<PageGroupModel>().ToList();
+                    result.Data = dt.ConvertTo<PageModel>().ToList();
                     result.TotalRow = int.Parse(dt.Rows[0].ItemArray[dt.Rows[0].ItemArray.Length - 1].ToString());
                 }
                 return result;
@@ -38,19 +37,18 @@ namespace DAL
             {
                 throw ex;
             }
-           
         }
 
-        public PageGroupModel GetDataID(int id)
+        public PageModel GetDataID(int id)
         {
             string msgError = "";
             try
             {
-                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_Page_Group_get_by_id",
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_Page_get_by_id",
                      "@id", id);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<PageGroupModel>().FirstOrDefault();
+                return dt.ConvertTo<PageModel>().FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -58,16 +56,17 @@ namespace DAL
             }
         }
 
-        public int CreateOrUpdate(PageGroupModel model)
+        public int CreateOrUpdate(PageModel model)
         {
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "PAGE_GROUP_INSERT_OR_UPDATE",
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "PAGE_INSERT_OR_UPDATE",
                 "@id", model.Id,
-                "@groupPage_code", model.GroupPage_Code,
-                "@groupPage_name", model.GroupPage_Name,
-                "@is_public",model.Is_public,
+                "@Page_code", model.Page_Code,
+                "@Page_name", model.Page_Name,
+                "@Id_group_page",model.Id_Group_Page,
+                "@is_public", model.Is_public,
                 "@description", model.Description,
                 "@active", model.Active);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
@@ -85,12 +84,12 @@ namespace DAL
             }
         }
 
-        public int Delete(PageGroupModel model)
+        public int Delete(PageModel model)
         {
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_page_group_delete",
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_Page_delete",
                 "@id", model.Id);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {

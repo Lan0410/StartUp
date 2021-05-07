@@ -5,12 +5,11 @@ using ISCommon.Model;
 
 namespace Model
 {
-    public class GroupPageModel
+    public class ReadedNewModel
     {
         public int Id { get; set; }
-        public string GroupPage_Code { get; set; }
-        public string GroupPage_Name { get; set; }
-        public int Is_public { get; set; }
+        public int Id_News { get; set; }
+        public int Id_Users { get; set; }
         public string Description { get; set; }
         public int Active { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -18,16 +17,16 @@ namespace Model
         public DateTime LastModifyDate { get; set; }
         public string LastModifyBy { get; set; }
     }
-    public class GroupPageModelParameter
+
+    public class ReadedNewModelParameter
     {
-        public GroupPageModel Data { get; set; }
+        public ReadedNewModel Data { get; set; }
         public PageParameter Page { get; set; }
     }
 
-    public class GroupPageReturnModel
+    public class ReadedNewReturnModel
     {
-        public List<GroupPageModel> Data { get; set; }
-        
+        public List<ReadedNewModel> Data { get; set; }
         public int TotalRow { get; set; }
 
     }

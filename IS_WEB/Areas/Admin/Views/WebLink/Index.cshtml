@@ -20,12 +20,12 @@
                         <table class="table table-bordered dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                             <thead>
                                 <tr role="row">
-                                    <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 50px;">STT</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Mã website</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 408px;">Tên website</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Mô tả</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 250px;">Trạng thái</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 200px;">Thao tác</th>
+                                    <th class="sorting_asc" >STT</th>
+                                    <th class="sorting" >Mã website</th>
+                                    <th class="sorting" >Tên website</th>
+                                    <th class="sorting" >Mô tả</th>
+                                    <th class="sorting" >Trạng thái</th>
+                                    <th class="sorting" >Thao tác</th>
                                 </tr>
                             </thead>
 
@@ -165,15 +165,10 @@
                 <td>"+ val.description + "</td><td> <span class='badge badge-pill " + type + "'> " + act + "</span></td ><td>\
                 <button  class='btn btn-outline-warning' onclick='Edit(" + val.id + ")'>Sửa</button>\
                 <button  class='btn btn-outline-danger' onclick='Delete(" + val.id + ")'>Xóa</button></td></tr > ")
-
-
                 })
                 loadPagination(totalRecord);
                 let PElement = document.querySelector("li.item");
                 PElement.classList.add("active");
-                if (totalRecord > 0) {
-
-                }
             }
         })
 
@@ -239,12 +234,9 @@
             processData: false,
             contentType: false,
             success: function (data) {
-                
                     alert(data.messege);
                     $("#exampleModal").modal('hide');
                     loadData(start, length, object);
-                
-               
             }
         })
     }

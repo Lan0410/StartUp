@@ -5,12 +5,11 @@ using ISCommon.Model;
 
 namespace Model
 {
-    public class PageGroupModel
+    public class DomainModel
     {
         public int Id { get; set; }
-        public string GroupPage_Code { get; set; }
-        public string GroupPage_Name { get; set; }
-        public int Is_public { get; set; }
+        public string Domain_Code { get; set; }
+        public string Domain_Name { get; set; }
         public string Description { get; set; }
         public int Active { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -19,14 +18,16 @@ namespace Model
         public string LastModifyBy { get; set; }
     }
 
-    public class PageGroupModelParameter
+    public class DomainModelParameter
     {
-        public PageGroupModel Data { get; set; }
+        public DomainModel Data { get; set; }
         public PageParameter Page { get; set; }
     }
-    public class PageGroupReturnModel
+
+    public class DomainReturnModel
     {
-        public List<PageGroupModel> Data { get; set; }
+        public List<DomainModel> Data { get; set; }
         public int TotalRow { get; set; }
+
     }
 }
